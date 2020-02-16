@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="login_demo" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="tomcat-api" />
+          <element id="file-copy" path="H:/back_server/Servlet/lib/mysql-connector-java-8.0.16.jar" />
+        </element>
       </element>
     </root>
   </artifact>
