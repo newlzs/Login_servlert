@@ -1,6 +1,9 @@
+import com.mysql.cj.xdevapi.Session;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -34,7 +37,6 @@ public class login extends HttpServlet {
             ResultSet result = sql_statement.executeQuery(query);
 
             if(result.isBeforeFirst()){
-                System.out.println("asdfasdfasdfasdfasdfsadfasf");
                 result.next();
                 String true_password = result.getString("password");
 
@@ -42,13 +44,22 @@ public class login extends HttpServlet {
                 result.close();
                 sql_statement.close();
 
-                if(true_password.equals(password)) out.println("登陆成功");
-                else out.println("登陆失败");
+                if(true_password.equals(password)) {
+                    BuildToken(request, account);
+                    out.println("登陆成功");
+                    System.out.println("登陆成功");
+                }
+                else out.println("密码或账号不正确");
             }else{
                 out.println("用户不存在");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    private void BuildToken(HttpServletRequest request, String account){
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1 * 60 * 60);
+        session.setAttribute("account", account);
     }
 }
